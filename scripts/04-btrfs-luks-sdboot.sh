@@ -141,7 +141,13 @@ swapon $swapfile
 # UPDATE MIRRORS
 # ===============================
 echo "Updating mirrorlist..."
-reflector -c Russia -a 6 --sort rate --save /etc/pacman.d/mirrorlist
+reflector \
+  --country Russia,Finland,Germany,Netherlands,Switzerland \
+  --protocol https \
+  --age 6 \
+  --sort rate \
+  --latest 5 \
+  --save /etc/pacman.d/mirrorlist
 
 # ===============================
 # PACSTRAP

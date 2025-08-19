@@ -13,10 +13,10 @@ set -euo pipefail
 # ===============================
 # VARIABLES (set here or leave empty for interactive input)
 # ===============================
-HOSTNAME="${HOSTNAME:-}"
-USERNAME="${USERNAME:-}"
-ROOTPASS="${ROOTPASS:-}"
-USERPASS="${USERPASS:-}"
+HOSTNAME=""
+USERNAME=""
+ROOTPASS=""
+USERPASS=""
 TIMEZONE="Europe/Moscow"
 LOCALE="en_US.UTF-8"
 SWAP_SIZE=4G
@@ -24,28 +24,60 @@ SWAP_SIZE=4G
 # ===============================
 # INTERACTIVE INPUT
 # ===============================
-if [[ -z "$HOSTNAME" ]]; then
-    read -rp "Enter hostname: " HOSTNAME
-fi
 
-if [[ -z "$USERNAME" ]]; then
-    read -rp "Enter username: " USERNAME
+# Hostname
+if [[ -z "$HOSTNAME" ]]; then
+    echo
+    echo "=== HOSTNAME SETUP ==="
+    while true; do
+        read -rp "Enter hostname (lowercase, no spaces): " HOSTNAME
+        OLD_HOSTNAME="$HOSTNAME"
+        HOSTNAME=$(echo "$HOSTNAME" | tr '[:upper:]' '[:lower:]')   # авто-лоуэркейз
+        if [[ "$HOSTNAME" =~ ^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$ ]]; then
+            [[ "$OLD_HOSTNAME" != "$HOSTNAME" ]] && echo "Notice: hostname converted to lowercase: $HOSTNAME"
+            break
+        else
+            echo "Invalid hostname. Use lowercase letters, digits, or hyphens (cannot start/end with hyphen, max 63 chars)."
+        fi
+    done
 fi
 
 # Root password
 if [[ -z "$ROOTPASS" ]]; then
+    echo
+    echo "=== ROOT PASSWORD SETUP ==="
+    echo "!!! ROOT PASSWORD WILL BE USED FOR SYSTEM ADMINISTRATION !!!"
     while true; do
-        read -s -rp "Enter root password: " ROOTPASS
+        read -s -rp "Enter ROOT password: " ROOTPASS
         echo
-        read -s -rp "Repeat root password: " ROOTPASS2
+        read -s -rp "Repeat ROOT password: " ROOTPASS2
         echo
         [[ "$ROOTPASS" == "$ROOTPASS2" && -n "$ROOTPASS" ]] && break
         echo "Passwords do not match or empty. Try again."
     done
 fi
 
+# User name
+if [[ -z "$USERNAME" ]]; then
+    echo
+    echo "=== USERNAME SETUP ==="
+    while true; do
+        read -rp "Enter username (lowercase, no spaces): " USERNAME
+        OLD_USERNAME="$USERNAME"
+        USERNAME=$(echo "$USERNAME" | tr '[:upper:]' '[:lower:]')   # авто-лоуэркейз
+        if [[ "$USERNAME" =~ ^[a-z_][a-z0-9_-]*$ ]]; then
+            [[ "$OLD_USERNAME" != "$USERNAME" ]] && echo "Notice: username converted to lowercase: $USERNAME"
+            break
+        else
+            echo "Invalid username. Use lowercase letters, digits, underscore or hyphen (must start with a letter/underscore)."
+        fi
+    done
+fi
+
 # User password
 if [[ -z "$USERPASS" ]]; then
+    echo
+    echo "=== USER PASSWORD SETUP ==="
     while true; do
         read -s -rp "Enter password for $USERNAME: " USERPASS
         echo
@@ -55,6 +87,7 @@ if [[ -z "$USERPASS" ]]; then
         echo "Passwords do not match or empty. Try again."
     done
 fi
+
 
 
 # ===============================

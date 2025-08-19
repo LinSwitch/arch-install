@@ -60,7 +60,7 @@ GUI по умолчанию не устанавливается — вы пол�
 2. **Загрузись** с Arch ISO и **подключи интернет**.
 3. **Скачай скрипт**:
    ```bash
-   curl -LO https://raw.githubusercontent.com/LinSwitch/arch-install/main/название_скрипта
+   curl -LO https://raw.githubusercontent.com/LinSwitch/arch-install/main/scripts/название_скрипта
    chmod +x название_скрипта
    ```
 4. **Запусти установку**:

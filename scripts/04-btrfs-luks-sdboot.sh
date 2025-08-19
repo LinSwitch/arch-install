@@ -216,6 +216,7 @@ EOF
 # ===============================
 # FINISH
 # ===============================
+swapoff "$swapfile" 2>/dev/null || true
 umount -R /mnt
 cryptsetup close cryptroot
 echo -e "\n✅ Installation complete!"

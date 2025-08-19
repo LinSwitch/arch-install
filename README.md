@@ -33,10 +33,10 @@ GUI по умолчанию не устанавливается — вы пол�
 
 | Сценарий              | Файл                      | Особенности                  |
 |-----------------------|---------------------------|------------------------------|
-| **Просто работает**   | [01-ext4-grub.sh](https://raw.githubusercontent.com/LinSwitch/install/main/01-ext4-grub.sh)        | ext4, GRUB, swap-файл        |
-| **Снимки + откат**    | [02-btrfs-grub.sh](https://raw.githubusercontent.com/LinSwitch/install/main/02-btrfs-grub.sh)        | btrfs, subvol, GRUB          |
-| **Шифрование**        | [03-btrfs-luks-grub.sh](https://raw.githubusercontent.com/LinSwitch/install/main/03-btrfs-luks-grub.sh)    | btrfs + LUKS2 + GRUB         |
-| **Современно**        | [04-btrfs-luks-sdboot.sh](https://raw.githubusercontent.com/LinSwitch/install/main/04-btrfs-luks-sdboot.sh) | btrfs + LUKS2 + systemd-boot |
+| **Просто работает**   | [01-ext4-grub.sh](scripts/01-ext4-grub.sh)        | ext4, GRUB, swap-файл        |
+| **Снимки + откат**    | [02-btrfs-grub.sh](scripts/02-btrfs-grub.sh)        | btrfs, subvol, GRUB          |
+| **Шифрование**        | [03-btrfs-luks-grub.sh](scripts/03-btrfs-luks-grub.sh)    | btrfs + LUKS2 + GRUB         |
+| **Современно**        | [04-btrfs-luks-sdboot.sh](scripts/04-btrfs-luks-sdboot.sh) | btrfs + LUKS2 + systemd-boot |
 
 
 📦 **Структура Btrfs (скрипты 02-04)**

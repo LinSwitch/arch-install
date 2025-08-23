@@ -174,13 +174,30 @@ swapon $swapfile
 # UPDATE MIRRORS
 # ===============================
 echo "Updating mirrorlist..."
-reflector \
-  --country Russia,Finland,Germany,Netherlands,Switzerland \
-  --protocol https \
-  --age 6 \
-  --sort rate \
-  --latest 5 \
-  --save /etc/pacman.d/mirrorlist
+
+success=false
+for attempt in 1 2; do
+    echo "  -> Attempt $attempt: updating mirrors via reflector..."
+    if reflector -c Russia,Finland,Germany,Netherlands,Switzerland \
+        --protocol https --latest 5 --ipv4 --save /etc/pacman.d/mirrorlist; then
+        echo "  -> Success"
+        success=true
+        break
+    else
+        echo "  -> Failed to update mirrors"
+    fi
+done
+
+if [ "$success" != true ]; then
+    echo "  -> Using fallback mirrors"
+    cat > /etc/pacman.d/mirrorlist <<MIRRORS
+Server = https://mirror.pseudoform.org/\$repo/os/\$arch
+Server = https://pkg.fef.moe/archlinux/\$repo/os/\$arch
+Server = https://berlin.mirror.pkgbuild.com/\$repo/os/\$arch
+Server = https://cdnmirror.com/archlinux/\$repo/os/\$arch
+Server = https://mirror.ubrco.de/archlinux/\$repo/os/\$arch
+MIRRORS
+fi
 
 # ===============================
 # PACSTRAP

@@ -169,6 +169,7 @@ ln -sf /usr/share/zoneinfo/$TIMEZONE /etc/localtime
 hwclock --systohc
 echo "LANG=$LOCALE" > /etc/locale.conf
 echo "KEYMAP=us" > /etc/vconsole.conf
+echo "FONT=cyr-sun16" >> /etc/vconsole.conf
 sed -i 's/^#en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen
 sed -i 's/^#ru_RU.UTF-8/ru_RU.UTF-8/' /etc/locale.gen
 locale-gen
@@ -192,7 +193,7 @@ chmod 0440 /etc/sudoers.d/10-wheel
 
 # Swap file
 echo "Creating swap file..."
-dd if=/dev/zero of=/swapfile bs=1M count=$(( ${SWAPFILE_SIZE%G} * 1024 )) status=progress
+fallocate -l "${SWAPFILE_SIZE}iB" /swapfile
 chmod 600 /swapfile
 mkswap /swapfile
 echo "/swapfile none swap defaults 0 0" >> /etc/fstab

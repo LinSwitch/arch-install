@@ -1,6 +1,13 @@
 #!/bin/bash
-# arch-install.sh
+# 04-btrfs-luks-sdboot.sh
 # Clean Arch Linux installation: Btrfs + LUKS2 + systemd-boot
+# _     _       _____          _ _       _     
+#| |   (_)     /  ___|        (_) |     | |    
+#| |    _ _ __ \ `--.__      ___| |_ ___| |__  
+#| |   | | '_ \ `--. \ \ /\ / / | __/ __| '_ \ 
+#| |___| | | | /\__/ /\ V  V /| | || (__| | | |
+#\_____/_|_| |_\____/  \_/\_/ |_|\__\___|_| |_|
+#
 
 set -euo pipefail
 

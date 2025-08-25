@@ -1,6 +1,13 @@
 #!/bin/bash
-# arch-install.sh
+# 01-ext4-grub.sh
 # Clean Arch Linux installation: Ext4 + GRUB (no encryption)
+# _     _       _____          _ _       _     
+#| |   (_)     /  ___|        (_) |     | |    
+#| |    _ _ __ \ `--.__      ___| |_ ___| |__  
+#| |   | | '_ \ `--. \ \ /\ / / | __/ __| '_ \ 
+#| |___| | | | /\__/ /\ V  V /| | || (__| | | |
+#\_____/_|_| |_\____/  \_/\_/ |_|\__\___|_| |_|
+#
 
 set -euo pipefail
 

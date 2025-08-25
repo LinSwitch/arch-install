@@ -164,7 +164,7 @@ mkfs.fat -F32 -n EFI "${DISK}1"
 mount "${DISK}1" /mnt/boot
 
 # ===============================
-# SCREATE SWAPFILE
+# CREATE SWAPFILE
 # ===============================
 swapfile="/mnt/.swap/swapfile"
 btrfs filesystem mkswapfile --size "$SWAP_SIZE" $swapfile

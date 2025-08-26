@@ -39,7 +39,7 @@ if [[ -z "$HOSTNAME" ]]; then
     while true; do
         read -rp "Enter hostname (lowercase, no spaces): " HOSTNAME
         OLD_HOSTNAME="$HOSTNAME"
-        HOSTNAME=$(echo "$HOSTNAME" | tr '[:upper:]' '[:lower:]')   # авто-лоуэркейз
+        HOSTNAME=$(echo "$HOSTNAME" | tr '[:upper:]' '[:lower:]')   
         if [[ "$HOSTNAME" =~ ^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$ ]]; then
             [[ "$OLD_HOSTNAME" != "$HOSTNAME" ]] && echo "Notice: hostname converted to lowercase: $HOSTNAME"
             break
@@ -71,7 +71,7 @@ if [[ -z "$USERNAME" ]]; then
     while true; do
         read -rp "Enter username (lowercase, no spaces): " USERNAME
         OLD_USERNAME="$USERNAME"
-        USERNAME=$(echo "$USERNAME" | tr '[:upper:]' '[:lower:]')   # авто-лоуэркейз
+        USERNAME=$(echo "$USERNAME" | tr '[:upper:]' '[:lower:]')   
         if [[ "$USERNAME" =~ ^[a-z_][a-z0-9_-]*$ ]]; then
             [[ "$OLD_USERNAME" != "$USERNAME" ]] && echo "Notice: username converted to lowercase: $USERNAME"
             break
@@ -121,7 +121,7 @@ sgdisk -n 2:0:0  -t 2:8300 -c 2:ROOT "$DISK"
 # ===============================
 mkfs.btrfs -L ArchRoot "${DISK}2"
 mount "${DISK}2" /mnt
-for vol in @ @home @snapshots @log @pkg @tmp @opt @swap; do
+for vol in @ @home @log @pkg @tmp @opt @swap; do
     btrfs subvolume create "/mnt/$vol"
 done
 umount /mnt
@@ -137,7 +137,6 @@ mount -o "$mount_opts,subvol=@" "$root_dev" /mnt
 
 declare -A subvolumes=( 
     [@home]="/mnt/home" 
-    [@snapshots]="/mnt/.snapshots" 
     [@log]="/mnt/var/log" 
     [@opt]="/mnt/opt" 
 )
@@ -204,13 +203,12 @@ fi
 # PACSTRAP
 # ===============================
 pacstrap -K /mnt base linux linux-firmware linux-headers snapper snap-pac \
-    btrfs-progs sudo vim nano networkmanager grub efibootmgr os-prober grub-btrfs
+    btrfs-progs sudo vim nano networkmanager grub efibootmgr os-prober grub-btrfs inotify-tools
 
 # ===============================
 # FSTAB
 # ===============================
 genfstab -U /mnt >> /mnt/etc/fstab
-echo "/.swap/swapfile none swap defaults 0 0" >> /mnt/etc/fstab
 
 # ===============================
 # CHROOT CONFIGURATION
@@ -249,15 +247,15 @@ chmod 0440 /etc/sudoers.d/10-wheel
 sed -i 's/^HOOKS=.*/HOOKS=(base udev autodetect keyboard consolefont modconf block btrfs filesystems)/' /etc/mkinitcpio.conf
 mkinitcpio -P
 
-# --- Snapper ---
-snapper -c root create-config /
-snapper -c root set-config TIMELINE_CREATE=no
-snapper -c root set-config NUMBER_LIMIT=6
-snapper -c root set-config NUMBER_LIMIT_IMPORTANT=2
-
 # Bootloader - GRUB
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB --removable --recheck
 grub-mkconfig -o /boot/grub/grub.cfg
+
+# --- Snapper ---
+snapper --no-dbus -c root create-config /
+snapper --no-dbus -c root set-config TIMELINE_CREATE=no
+snapper --no-dbus -c root set-config NUMBER_LIMIT=6
+snapper --no-dbus -c root set-config NUMBER_LIMIT_IMPORTANT=2
 
 # Enable NetworkManager
 systemctl enable NetworkManager

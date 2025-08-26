@@ -246,15 +246,14 @@ echo "%wheel ALL=(ALL:ALL) ALL" > /etc/sudoers.d/10-wheel
 chmod 0440 /etc/sudoers.d/10-wheel
 
 # Initramfs
-sed -i 's/^HOOKS=.*/HOOKS=(base udev autodetect keyboard consolefont modconf block btrfs filesystems fsck)/' /etc/mkinitcpio.conf
+sed -i 's/^HOOKS=.*/HOOKS=(base udev autodetect keyboard consolefont modconf block btrfs filesystems)/' /etc/mkinitcpio.conf
 mkinitcpio -P
 
 # --- Snapper ---
 snapper -c root create-config /
 snapper -c root set-config TIMELINE_CREATE=no
-snapper -c root set-config NUMBER_LIMIT=3
-snapper -c root set-config NUMBER_LIMIT_IMPORTANT=1
-systemctl enable snapper-cleanup.timer
+snapper -c root set-config NUMBER_LIMIT=6
+snapper -c root set-config NUMBER_LIMIT_IMPORTANT=2
 
 # Bootloader - GRUB
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB --removable --recheck
@@ -263,7 +262,9 @@ grub-mkconfig -o /boot/grub/grub.cfg
 # Enable NetworkManager
 systemctl enable NetworkManager
 #Enable Grub-BTRFS
-systemctl enable grub-btrfs.path
+systemctl enable grub-btrfsd
+#Enable snapper-cleanup
+systemctl enable snapper-cleanup.timer
 EOF
 
 # ===============================

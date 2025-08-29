@@ -216,7 +216,6 @@ pacstrap -K /mnt base linux linux-firmware linux-headers \
 # FSTAB
 # ===============================
 genfstab -U /mnt >> /mnt/etc/fstab
-echo "/.swap/swapfile none swap defaults 0 0" >> /mnt/etc/fstab
 
 # ===============================
 # CHROOT CONFIGURATION

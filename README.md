@@ -35,7 +35,7 @@ GUI по умолчанию не устанавливается — вы пол�
 |-----------------------|---------------------------|------------------------------|
 | **Просто работает**   | [01-ext4-grub.sh](scripts/01-ext4-grub.sh)        | ext4, GRUB, swap-файл        |
 | **Снимки + откат**    | [02-btrfs-grub.sh](scripts/02-btrfs-grub.sh)        | btrfs, subvol, GRUB          |
-| **Шифрование**        | [03-btrfs-luks-grub.sh](scripts/03-btrfs-luks-grub.sh)    | btrfs + LUKS + GRUB         |
+| **Шифрование**        | [03-btrfs-luks-grub.sh] | btrfs + LUKS + GRUB         |
 | **Современно**        | [04-btrfs-luks-sdboot.sh](scripts/04-btrfs-luks-sdboot.sh) | btrfs + LUKS2 + systemd-boot |
 
 

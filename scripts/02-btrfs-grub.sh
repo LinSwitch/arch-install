@@ -202,7 +202,7 @@ fi
 # ===============================
 # PACSTRAP
 # ===============================
-pacstrap -K /mnt base linux linux-firmware linux-headers snapper snap-pac \
+pacstrap -K /mnt base linux linux-firmware linux-headers snapper \
     btrfs-progs sudo vim nano networkmanager grub efibootmgr os-prober grub-btrfs inotify-tools
 
 # ===============================

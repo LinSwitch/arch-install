@@ -118,7 +118,7 @@ sgdisk -n 2:0:0 -t 2:8300 -c 2:ROOT "$DISK"             # Root partition
 mkfs.fat -F32 -n EFI "${DISK}1"
 
 # root ext4
-mkfs.ext4 -L ArchRoot "${DISK}2"
+mkfs.ext4 -F -L ArchRoot "${DISK}2"
 
 mount "${DISK}2" /mnt
 

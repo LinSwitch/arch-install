@@ -119,7 +119,7 @@ sgdisk -n 2:0:0  -t 2:8300 -c 2:ROOT "$DISK"
 # ===============================
 # BTRFS SUBVOLUMES
 # ===============================
-mkfs.btrfs -L ArchRoot "${DISK}2"
+mkfs.btrfs -f -L ArchRoot "${DISK}2"
 mount "${DISK}2" /mnt
 for vol in @ @home @log @pkg @tmp @opt @swap; do
     btrfs subvolume create "/mnt/$vol"

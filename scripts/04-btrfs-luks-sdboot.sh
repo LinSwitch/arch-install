@@ -125,7 +125,7 @@ cryptsetup open --allow-discards "${DISK}2" cryptroot
 # ===============================
 # BTRFS SUBVOLUMES
 # ===============================
-mkfs.btrfs -L ArchRoot /dev/mapper/cryptroot
+mkfs.btrfs -f -L ArchRoot /dev/mapper/cryptroot
 mount /dev/mapper/cryptroot /mnt
 for vol in @ @home @snapshots @log @pkg @tmp @opt @swap; do
     btrfs subvolume create "/mnt/$vol"

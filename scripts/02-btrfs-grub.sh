@@ -202,8 +202,8 @@ fi
 # ===============================
 # PACSTRAP
 # ===============================
-pacstrap -K /mnt base linux linux-firmware linux-headers snapper \
-    btrfs-progs sudo vim nano networkmanager grub efibootmgr os-prober grub-btrfs inotify-tools
+pacstrap -K /mnt base linux linux-firmware linux-headers \
+    btrfs-progs sudo vim nano networkmanager grub efibootmgr os-prober inotify-tools
 
 # ===============================
 # FSTAB
@@ -251,18 +251,8 @@ mkinitcpio -P
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB --removable --recheck
 grub-mkconfig -o /boot/grub/grub.cfg
 
-# --- Snapper ---
-snapper --no-dbus -c root create-config /
-snapper --no-dbus -c root set-config TIMELINE_CREATE=no
-snapper --no-dbus -c root set-config NUMBER_LIMIT=6
-snapper --no-dbus -c root set-config NUMBER_LIMIT_IMPORTANT=2
-
 # Enable NetworkManager
 systemctl enable NetworkManager
-#Enable Grub-BTRFS
-systemctl enable grub-btrfsd
-#Enable snapper-cleanup
-systemctl enable snapper-cleanup.timer
 EOF
 
 # ===============================

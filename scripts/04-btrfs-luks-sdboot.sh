@@ -223,7 +223,7 @@ genfstab -U /mnt >> /mnt/etc/fstab
 # ===============================
 # CHROOT CONFIGURATION
 # ===============================
-UUID_CRYPT=$(blkid -s UUID -o value "${DISK}2")
+UUID_CRYPT=$(blkid -s UUID -o value "${DISK}${PARTP}2")
 arch-chroot /mnt /bin/bash <<EOF
 set -e
 

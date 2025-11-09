@@ -112,6 +112,9 @@ read -rp "Type 'yes' to continue: " confirm
 # ===============================
 # PARTITIONING
 # ===============================
+
+[[ $DISK =~ [0-9]$ ]] && PARTP=p || PARTP=
+
 sgdisk -Z "$DISK"
 sgdisk -n 1:0:+1G -t 1:ef00 -c 1:EFI "$DISK"
 sgdisk -n 2:0:0  -t 2:8300 -c 2:ROOT "$DISK"
@@ -119,8 +122,8 @@ sgdisk -n 2:0:0  -t 2:8300 -c 2:ROOT "$DISK"
 # ===============================
 # BTRFS SUBVOLUMES
 # ===============================
-mkfs.btrfs -f -L ArchRoot "${DISK}2"
-mount "${DISK}2" /mnt
+mkfs.btrfs -f -L ArchRoot "${DISK}${PARTP}2"
+mount "${DISK}${PARTP}2" /mnt
 for vol in @ @home @log @pkg @tmp @opt @swap; do
     btrfs subvolume create "/mnt/$vol"
 done
@@ -131,7 +134,7 @@ umount /mnt
 # ===============================
 mount_opts="noatime,ssd,discard=async,compress=zstd"
 special_opts="nodatacow,compress=no"
-root_dev="${DISK}2"
+root_dev="${DISK}${PARTP}2"
 
 mount -o "$mount_opts,subvol=@" "$root_dev" /mnt
 
@@ -160,8 +163,8 @@ done
 # ===============================
 # EFI PARTITION
 # ===============================
-mkfs.fat -F32 -n EFI "${DISK}1"
-mount "${DISK}1" /mnt/boot
+mkfs.fat -F32 -n EFI "${DISK}${PARTP}1"
+mount "${DISK}${PARTP}1" /mnt/boot
 
 # ===============================
 # CREATE SWAPFILE

@@ -110,20 +110,23 @@ read -rp "Type 'yes' to continue: " confirm
 # ===============================
 # PARTITIONING 
 # ===============================
+
+[[ $DISK =~ [0-9]$ ]] && PARTP=p || PARTP=
+
 sgdisk -Z "$DISK"
 sgdisk -n 1:0:+1G -t 1:ef00 -c 1:EFI "$DISK"          # EFI partition
 sgdisk -n 2:0:0 -t 2:8300 -c 2:ROOT "$DISK"             # Root partition
 
 # EFI fat
-mkfs.fat -F32 -n EFI "${DISK}1"
+mkfs.fat -F32 -n EFI "${DISK}${PARTP}1"
 
 # root ext4
-mkfs.ext4 -F -L ArchRoot "${DISK}2"
+mkfs.ext4 -F -L ArchRoot "${DISK}${PARTP}2"
 
-mount "${DISK}2" /mnt
+mount "${DISK}${PARTP}2" /mnt
 
 mkdir -p /mnt/boot
-mount "${DISK}1" /mnt/boot
+mount "${DISK}${PARTP}1" /mnt/boot
 
 # ===============================
 # UPDATE MIRRORS

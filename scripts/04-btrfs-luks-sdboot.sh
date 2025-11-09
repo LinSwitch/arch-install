@@ -112,6 +112,9 @@ read -rp "Type 'yes' to continue: " confirm
 # ===============================
 # PARTITIONING
 # ===============================
+
+[[ $DISK =~ [0-9]$ ]] && PARTP=p || PARTP=
+
 sgdisk -Z "$DISK"
 sgdisk -n 1:0:+1G -t 1:ef00 -c 1:EFI "$DISK"
 sgdisk -n 2:0:0  -t 2:8300 -c 2:ROOT "$DISK"
@@ -119,8 +122,8 @@ sgdisk -n 2:0:0  -t 2:8300 -c 2:ROOT "$DISK"
 # ===============================
 # LUKS ENCRYPTION
 # ===============================
-cryptsetup luksFormat --perf-no_read_workqueue --perf-no_write_workqueue --iter-time 2000 "${DISK}2"
-cryptsetup open --allow-discards "${DISK}2" cryptroot
+cryptsetup luksFormat --perf-no_read_workqueue --perf-no_write_workqueue --iter-time 2000 "${DISK}${PARTP}2"
+cryptsetup open --allow-discards "${DISK}${PARTP}2" cryptroot
 
 # ===============================
 # BTRFS SUBVOLUMES
@@ -167,8 +170,8 @@ done
 # ===============================
 # EFI PARTITION
 # ===============================
-mkfs.fat -F32 -n EFI "${DISK}1"
-mount "${DISK}1" /mnt/boot
+mkfs.fat -F32 -n EFI "${DISK}${PARTP}1"
+mount "${DISK}${PARTP}1" /mnt/boot
 
 # ===============================
 # CREATE SWAPFILE
